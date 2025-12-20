@@ -1,5 +1,5 @@
 // java
-package com.example.demo;
+package com.example.security;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterChain;
