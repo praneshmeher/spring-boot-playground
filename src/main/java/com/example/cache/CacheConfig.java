@@ -1,5 +1,7 @@
 package com.example.cache;
 
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,11 @@ import java.lang.reflect.Method;
 
 @Configuration
 public class CacheConfig {
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("products");
+    }
 
     @Bean("simpleKeyGen")
     public KeyGenerator simpleKeyGen() {
