@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: demo
+  cloud:
+    config:
+      import-check:
+        enabled: false
+      enabled: false
+logging:
+  level:
+    org.springframework.security: INFO
+
