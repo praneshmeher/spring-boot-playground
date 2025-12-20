@@ -1,5 +1,7 @@
 package com.example.async;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +14,8 @@ import java.util.concurrent.Future;
 
 @RestController
 public class AsyncController {
+
+    private static final Logger log = LoggerFactory.getLogger(AsyncController.class);
 
     private final AsyncService asyncService;
 
@@ -36,10 +40,29 @@ public class AsyncController {
     }
 
     @GetMapping("/async/report/combined")
-    public CompletableFuture<Map<String, Object>> combined(@RequestParam(defaultValue = "SKU-1") String sku) {
-        CompletableFuture<BigDecimal> priceF = asyncService.fetchPrice(sku);
-        CompletableFuture<Integer> invF = asyncService.fetchInventory(sku);
-        CompletableFuture<Integer> etaF = asyncService.fetchShippingEtaDays(sku);
+    public CompletableFuture<Map<String, Object>> combined(@RequestParam(defaultValue = "SKU-1") String sku,
+                                                          @RequestParam(defaultValue = "false") boolean failInventory) {
+
+        CompletableFuture<BigDecimal> priceF = asyncService.fetchPrice(sku)
+                .whenComplete((v, ex) -> {
+                    if (ex == null) log.info("price ok");
+                    else log.info("price fail");
+                })
+                .exceptionally(ex -> new BigDecimal("0.00"));
+
+        CompletableFuture<Integer> invF =  asyncService.fetchInventory(sku)
+                .whenComplete((v, ex) -> {
+                    if (ex == null) log.info("inventory ok");
+                    else log.info("inventory fail");
+                })
+                .exceptionally(ex -> Integer.valueOf(0));
+
+        CompletableFuture<Integer> etaF = asyncService.fetchShippingEtaDays(sku)
+                .whenComplete((v, ex) -> {
+                    if (ex == null) log.info("eta ok");
+                    else log.info("eta fail");
+                })
+                .exceptionally(ex -> -1);
 
         return CompletableFuture.allOf(priceF, invF, etaF)
                 .thenApply(ignored -> Map.of(
