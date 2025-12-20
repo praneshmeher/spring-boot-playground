@@ -10,10 +10,12 @@ public class TransferController {
 
     private final TransferService transferService;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
-    public TransferController(TransferService transferService, AccountRepository accountRepository) {
+    public TransferController(TransferService transferService, AccountRepository accountRepository, AccountService accountService) {
         this.transferService = transferService;
         this.accountRepository = accountRepository;
+        this.accountService = accountService;
     }
 
     @PostMapping("/transfer")
@@ -38,5 +40,19 @@ public class TransferController {
         return accountRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // New endpoint: add amount to an account using the @Modifying query
+    @PostMapping("/accounts/{id}/add")
+    public ResponseEntity<Account> addToBalance(@PathVariable Long id, @RequestParam String amount) {
+        Account updated = accountService.addToBalance(id, new BigDecimal(amount));
+        return ResponseEntity.ok(updated);
+    }
+
+    // New endpoint: reset all balances to a given value using the @Modifying query
+    @PostMapping("/accounts/reset")
+    public ResponseEntity<String> resetAllBalances(@RequestParam String newBalance) {
+        int updatedCount = accountService.resetAllBalances(new BigDecimal(newBalance));
+        return ResponseEntity.ok("updated=" + updatedCount);
     }
 }
