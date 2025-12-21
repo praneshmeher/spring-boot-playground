@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 
 @Aspect
 @Component
-@SuppressWarnings("unused")
 public class PrefixResponseAspect {
 
     @Around("@annotation(com.example.annotation.PrefixResponse)")
