@@ -14,8 +14,7 @@ public class SecurityConfig {
         try {
             http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/filter/ping").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .csrf(csrf -> csrf.disable());
 
