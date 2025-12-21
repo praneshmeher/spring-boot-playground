@@ -28,6 +28,9 @@ public class SimpleLoggingInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         log.info("[SimpleLoggingInterceptor] postHandle {} {}", request.getMethod(), request.getRequestURI());
+        if (modelAndView != null) {
+            modelAndView.addObject("globalMessage", "This is a global message from the interceptor");
+        }
     }
 
     @Override
