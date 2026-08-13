@@ -206,6 +206,16 @@ public class Playground {
 
 //**********************************************************************************************************************
 
+//        split into individual letters
+
+        String[] arrr = {"Hello", "World"};
+
+        List<String> letters = Arrays.stream(arrr).flatMap(word -> word.chars().mapToObj(c -> String.valueOf((char) c))).collect(Collectors.toList());
+
+        System.out.println(letters);
+
+//**********************************************************************************************************************
+
 //        Find the first non-repeated character in a string
 
 //        String str = "geeksforgeeks";
