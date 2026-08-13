@@ -218,40 +218,25 @@ public class Playground {
 
 //        Find the first non-repeated character in a string
 
-//        String str = "geeksforgeeks";
-//
-//        Character s = str.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(
-//                c -> c,
-//                LinkedHashMap::new,
-//                Collectors.counting()
-//        )).entrySet().stream().filter(e -> e.getValue() == 1).findFirst().get().getKey();
-//        System.out.println(s);
-//
-//        Map<Character, Integer> map = new LinkedHashMap<>();
-//        for (int i = 0; i < str.length(); i++) {
-//            map.put(str.charAt(i), map.getOrDefault(str.charAt(i), 1) + 1);
-//        }
-//        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-//            if (entry.getValue() == 1) {
-//                System.out.println(entry.getKey());
-//                break;
-//            }
-//        }
+        String strr = "geeksforgeeks";
 
-//        String str = "geeksforgeeks";
-//        Map<Character, Long> map = str.chars()
-//                .mapToObj(c->(char) c)
-//                .collect(Collectors.groupingBy(
-//                        c-> c,
-//                        LinkedHashMap::new,
-//                        Collectors.counting()
-//                ));
-//
-//        Map.Entry<Character, Long> entry = map.entrySet()
-//                .stream()
-//                .filter(e->e.getValue()==1)
-//                .findFirst().orElse(null);
-//        System.out.println(entry.getKey());
+        Character s = strr.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(
+                c -> c,
+                LinkedHashMap::new,
+                Collectors.counting()
+        )).entrySet().stream().filter(e -> e.getValue() == 1).findFirst().get().getKey();
+        System.out.println(s);
+
+        Map<Character, Integer> map = new LinkedHashMap<>();
+        for (int i = 0; i < strr.length(); i++) {
+            map.put(strr.charAt(i), map.getOrDefault(strr.charAt(i), 1) + 1);
+        }
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) {
+                System.out.println(entry.getKey());
+                break;
+            }
+        }
 
 //**********************************************************************************************************************
 
@@ -299,7 +284,6 @@ public class Playground {
                 (a, b) -> a + b
         )).entrySet().stream().sorted((a, b) -> Long.compare(b.getValue(), a.getValue())).skip(2).findFirst().get().getKey();
         System.out.println("3rd most repeated character " + trepeated);
-
 
 
 //**********************************************************************************************************************
